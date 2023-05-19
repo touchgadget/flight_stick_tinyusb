@@ -173,7 +173,7 @@ FSJoystick::FSJoystick(Adafruit_USBD_HID *usb_hid)
 
 void FSJoystick::begin(void)
 {
-  this->usb_hid->setPollInterval(10);
+  this->usb_hid->setPollInterval(2);
   this->usb_hid->setReportDescriptor(desc_hid_report, sizeof(desc_hid_report));
   this->usb_hid->begin();
 
