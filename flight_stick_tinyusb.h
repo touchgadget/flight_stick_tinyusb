@@ -150,6 +150,8 @@ class FSJoystick {
     }
     inline void xAxis(int a) { _report.x = a; }
     inline void yAxis(int a) { _report.y = a; }
+    inline void twist(uint8_t a) { _report.twist = a; }
+    inline void slider(uint8_t a) { _report.slider= a; }
     inline void dPad(FSDirection_t d) { _report.hat = d; }
     inline void dPad(bool up, bool down, bool left, bool right);
     inline bool ready(void) { return this->usb_hid->ready(); }

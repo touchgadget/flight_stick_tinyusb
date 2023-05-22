@@ -42,9 +42,11 @@ void loop() {
   FSJoy.press(count);
   count++;
 
-  // Move x/y Axis to a new position (10-bit)
-  FSJoy.xAxis(random(1023));
-  FSJoy.yAxis(random(1023));
+  // Move x/y Axis to a random position (10-bit)
+  FSJoy.xAxis(random(1024));
+  FSJoy.yAxis(random(1024));
+  FSJoy.twist(random(256));
+  FSJoy.slider(random(256));
 
   // Go through all dPad positions
   static uint8_t dpad = FSJOYSTICK_DPAD_UP;
