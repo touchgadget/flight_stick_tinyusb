@@ -36,7 +36,7 @@ typedef uint8_t FSDirection_t;
 #define FSJOYSTICK_DPAD_UP_LEFT 7
 #define FSJOYSTICK_DPAD_CENTERED 0xF
 
-enum FSBUTTONs {
+enum FSBUTTONS {
   FSBUTTON_0 = 0,
   FSBUTTON_front = 0,
   FSBUTTON_1 = 1,
@@ -66,7 +66,7 @@ typedef struct __attribute__ ((packed)) {
   uint8_t buttons_a;
   uint8_t slider;       // 0..255
   uint8_t buttons_b;
-} FSJoystick_Report_t ;
+} FSJoystick_Report_t;
 
 // HID report descriptor using TinyUSB's template
 // Single Report (no ID) descriptor
@@ -213,22 +213,24 @@ void FSJoystick::write(void *report)
 
 void FSJoystick::press(uint8_t b)
 {
-  constrain(b, FSBUTTON_front, FSBUTTON_11);
-  if (b < FSBUTTON_8) {
-    _report.buttons_a |= 1 << b;
+  enum FSBUTTONS btn = constrain((enum FSBUTTONS)b, FSBUTTON_front,
+      FSBUTTON_11);
+  if (btn < FSBUTTON_8) {
+    _report.buttons_a |= 1 << btn;
   } else {
-    _report.buttons_b |= 1 << (b - FSBUTTON_8);
+    _report.buttons_b |= 1 << (btn - FSBUTTON_8);
   }
 }
 
 
 void FSJoystick::release(uint8_t b)
 {
-  constrain(b, FSBUTTON_front, FSBUTTON_11);
-  if (b < FSBUTTON_8) {
-    _report.buttons_a &= ~(1 << b);
+  enum FSBUTTONS btn = constrain((enum FSBUTTONS)b, FSBUTTON_front,
+      FSBUTTON_11);
+  if (btn < FSBUTTON_8) {
+    _report.buttons_a &= ~(1 << btn);
   } else {
-    _report.buttons_b &= ~(1 << (b - FSBUTTON_8));
+    _report.buttons_b &= ~(1 << (btn - FSBUTTON_8));
   }
 }
 
