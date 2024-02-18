@@ -14,7 +14,7 @@ Control |Description
 --------|---------------
 X       |10 bits, 0..1023
 Y       |10 bits, 0..1023
-Z       |8 bits, 0..255  
+Z       |8 bits, 0..255
 Throttle|8 bits, 0..255
 Buttons |12 buttons
 Hat     |8 way hat switch/direction pad
@@ -29,8 +29,13 @@ Install this library by downloading a zip file from this repo. Use the IDE
 
 ## Dependencies
 
-Use the IDE Library Manager to install the library named "Adafruit TinyUSB
-Library".
+Use the IDE Library Manager to install the following libraries.
+
+* "Adafruit TinyUSB Library"
+* "Adafruit NeoPixel"
+
+Install this project as a library by download it as a ZIP file from https://github.com/touchgadget/flight_stick_tinyusb.
+Then use the Arduino IDE option to install the ZIP as a library.
 
 ## Troubleshooting
 
