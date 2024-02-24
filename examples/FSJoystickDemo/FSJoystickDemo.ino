@@ -30,7 +30,7 @@ void setup() {
   FSJoy.begin();
 
   // wait until device mounted
-  while( !USBDevice.mounted() ) delay(1);
+  while( !TinyUSBDevice.mounted() ) delay(1);
 }
 
 void loop() {
