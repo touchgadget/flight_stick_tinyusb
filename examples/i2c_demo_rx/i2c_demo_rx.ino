@@ -24,9 +24,14 @@ SOFTWARE.
 
 #define DEBUG_ON  (0)
 
-// For Adafruit TrinKey QT2040 (RP2040)
+// For Adafruit QT Py RP2040
 // Receive HID report on i2c interface then write it to the USB interface
 #include <Wire.h>
+#ifdef ARDUINO_ADAFRUIT_FEATHER_RP2040_USB_HOST
+#define QWIIC Wire
+#else
+#define QWIIC Wire1
+#endif
 #include <Adafruit_NeoPixel.h>
 
 #include "flight_stick_tinyusb.h"
@@ -53,15 +58,15 @@ void setup() {
 
   // Initialize the NeoPixel LED
   pixels.begin();
-  pixels.setBrightness(25);
+  pixels.setBrightness(20);
   pixels.fill(0xFF0000);
   pixels.show();
 
   // i2x address 0x30 @ 400,000 bits/sec clock
-  Wire.setClock(400000);
-  Wire.begin(0x30);
-  Wire.onReceive(recv);
-  Wire.onRequest(req);
+  QWIIC.setClock(400000);
+  QWIIC.begin(0x30);
+  QWIIC.onReceive(recv);
+  QWIIC.onRequest(req);
 
 #if DEBUG_ON
   FSJoy.begin();
@@ -74,7 +79,11 @@ void setup() {
   delay(3000);
 #endif
   while(!FSJoy.ready()) delay(10);
-  FSJoy.loop();
+  FSJoy.xAxis(511);
+  FSJoy.yAxis(511);
+  FSJoy.twist(127);
+  FSJoy.slider(127);
+  FSJoy.write();
   // Set NeoPixel LED green
   pixels.fill(0x00FF00);
   pixels.show();
@@ -117,7 +126,7 @@ void recv(int len) {
   // copy to global buffer with check for overflow
   int copy_len = (len > sizeof(G_buff) ? sizeof(G_buff) : len);
   for (int i = 0; i < copy_len; i++) {
-    G_buff[i] = Wire.read();
+    G_buff[i] = QWIIC.read();
   }
   G_buff_len = copy_len;
   G_recv_state = true;
@@ -125,8 +134,6 @@ void recv(int len) {
 
 // Called when the I2C slave is read from
 void req() {
-  static uint16_t ctr = 0;
-  char buff[7];
-  snprintf(buff, sizeof(buff), "%06X", ctr++);
-  Wire.write(buff, 6);
+  static const char I2CJOY[] = "i2cjoy";
+  QWIIC.write(I2CJOY, sizeof(I2CJOY) - 1);
 }

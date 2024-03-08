@@ -3,12 +3,11 @@
 i2c_demo_rx shows how to receive HID joystick parameters from an I2C port then
 send the parameters out the USB joystck port. The board running i2c_demo_rx can
 be connected to another board as an I2C peripheral. i2c_demo_rx tested on an
-Adafruit Trinkey QT2040 board.
+Adafruit QT Py RP2040 board.
 
-![Trinkey connected to Feather RP2040](./images/Trinkey_connected_to_Feather_RP2040.jpg)
+![QT Py RP2040 connected to Feather RP2040](./images/QT_Py_RP2040_connected_to_Feather_RP2040.jpg)
 
-The cut red wire is shown with the ends flying but ends will be trimmed to
-avoid accidentally shorting 3.3V. More on the red wire below.
+Note the red wire in the QWIIC cable has been cut. See below for more.
 
 ## i2c_demo_rx RGB LED
 
@@ -25,11 +24,12 @@ Host board.
 
 The boards are connected to each other via QWIIC/Stemma QT ports using a QWIIC
 cable with the red wire cut. i2c_demo_tx/Feather RP2040 is configured as the
-I2C controller. The Trinkey/i2c_demo_rx is configured as the I2C peripheral.
+I2C controller. The QT Py running i2c_demo_rx is configured as the I2C
+peripheral.
 
 i2c_demo_tx (running on the Feather RP2040 with USB host) sends HID joystick
-information out its QWIIC port to the Trinkey QWIIC port. i2c_demo_rx (running
-on Trinkey) receives HID joystick information on it QWIIC port. i2c_demo_rx
+information out its QWIIC port to the QT Py QWIIC port. i2c_demo_rx (running
+on QT Qy) receives HID joystick information on it QWIIC port. i2c_demo_rx
 sends the HID joystick information out its USB port.
 
 ## Warning: Cut the red wire
@@ -44,7 +44,7 @@ there is no need for power from the QWIIC cable.
 Use Earle Philhower [Arduino board package for
 RP2040](https://github.com/earlephilhower/arduino-pico).
 
-![Arduino IDE build options for i2c_demo_rx](./images/build_options.jpg)
+![Arduino IDE build options for i2c_demo_rx](./images/build_options_qtpyrp2040.jpg)
 
 Use the IDE Library Manager to install the following libraries.
 
