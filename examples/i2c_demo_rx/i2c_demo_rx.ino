@@ -27,20 +27,25 @@ SOFTWARE.
 // For Adafruit QT Py RP2040
 // Receive HID report on i2c interface then write it to the USB interface
 #include <Wire.h>
-#ifdef ARDUINO_ADAFRUIT_FEATHER_RP2040_USB_HOST
+// Pi Pico does not have a QWIIC connector so use the default Wire
+#if defined(ARDUINO_ADAFRUIT_FEATHER_RP2040_USB_HOST) || defined(ARDUINO_RASPBERRY_PI_PICO)
 #define QWIIC Wire
 #else
 #define QWIIC Wire1
 #endif
+#ifdef PIN_NEOPIXEL
 #include <Adafruit_NeoPixel.h>
+#endif
 
 #include "flight_stick_tinyusb.h"
 Adafruit_USBD_HID G_usb_hid;
 FSJoystick FSJoy(&G_usb_hid);
 
+#ifdef PIN_NEOPIXEL
 // How many internal neopixels do we have? some boards have more than one!
 #define NUMPIXELS        1
 Adafruit_NeoPixel pixels(NUMPIXELS, PIN_NEOPIXEL, NEO_GRB + NEO_KHZ800);
+#endif
 
 volatile bool G_recv_state = false; // true when G_buff has new data
 volatile bool G_recv_overrun = false; // true when G_buff is processed too slow
@@ -56,11 +61,13 @@ void setup() {
   digitalWrite(NEOPIXEL_POWER, HIGH);
 #endif
 
+#ifdef PIN_NEOPIXEL
   // Initialize the NeoPixel LED
   pixels.begin();
   pixels.setBrightness(20);
   pixels.fill(0xFF0000);
   pixels.show();
+#endif
 
   // i2x address 0x30 @ 400,000 bits/sec clock
   QWIIC.setClock(400000);
@@ -83,10 +90,13 @@ void setup() {
   FSJoy.yAxis(511);
   FSJoy.twist(127);
   FSJoy.slider(127);
-  FSJoy.write();
+  FSJoy.loop();
+
+#ifdef PIN_NEOPIXEL
   // Set NeoPixel LED green
   pixels.fill(0x00FF00);
   pixels.show();
+#endif
 }
 
 void loop() {
