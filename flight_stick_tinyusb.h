@@ -146,7 +146,7 @@ class FSJoystick {
     inline void releaseAll(void) { _report.buttons_a = _report.buttons_b = 0;  }
     inline void buttons(uint16_t b) {
       _report.buttons_a = b & 0xFF;
-      _report.buttons_b = (b & 0x0F00) >> 4;
+      _report.buttons_b = (b & 0x0F00) >> 8;
     }
     inline void xAxis(int a) { _report.x = a; }
     inline void yAxis(int a) { _report.y = a; }
